@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "oled.h": "c",
+        "fonts.h": "c",
+        "distance.h": "c",
+        "task.h": "c",
+        "sdkconfig.h": "c",
+        "ets_sys.h": "c",
+        "array": "c",
+        "deque": "c",
+        "list": "c",
+        "string": "c",
+        "vector": "c",
+        "string_view": "c"
+    },
+    "idf.portWin": "COM3",
+    "idf.adapterTargetName": "esp32"
+}

@@ -1,0 +1,144 @@
+menu "Example Configuration"
+    choice EXAMPLE_IR_PROTOCOL
+        prompt "Infrared Protocol"
+        default EXAMPLE_IR_PROTOCOL_NEC
+        help
+            Choose the IR protocol used in the example.
+
+        config EXAMPLE_IR_PROTOCOL_NEC
+            bool "NEC"
+            help
+                NEC is a kind of Pulse Distance Protocol.
+                It uses ASK modulation and pulse distance encoding with a carrier frequency of 38 kHz.
+
+        config EXAMPLE_IR_PROTOCOL_RC5
+            bool "RC5"
+            help
+                The RC5 protocol was introduced by Philips.
+                It uses ASK modulation and Manchester encoding with carrier frequency fixed at 36 kHz.
+
+    endchoice
+
+    config EXAMPLE_RMT_TX_GPIO
+        int "RMT TX GPIO"
+        default 18
+        help
+            Set the GPIO number used for transmitting the RMT signal.
+
+    config EXAMPLE_RMT_RX_GPIO
+        int "RMT RX GPIO"
+        default 19
+        help
+            Set the GPIO number used for receiving the RMT signal.
+
+    config EXAMPLE_RMT_TX_CHANNEL
+        int "RMT TX Channel Number"
+        default 0
+        help
+            Set the RMT TX channel number.
+
+    config EXAMPLE_RMT_RX_CHANNEL
+        int "RMT RX Channel Number"
+        default 4 if IDF_TARGET_ESP32S3
+        default 2
+        help
+            Set the RMT RX channel number.
+
+
+    choice TCP_PERF_WIFI_MODE
+        prompt "AP or STA"
+        default TCP_PERF_ESP_IS_STATION
+        help
+            Whether the esp32 is softAP or station.
+    
+    config TCP_PERF_ESP_IS_SOFTAP
+        bool "SoftAP"
+    config TCP_PERF_ESP_IS_STATION
+        bool "Station"
+    endchoice
+    
+    config TCP_PERF_WIFI_MODE_AP
+        bool
+        default y if TCP_PERF_ESP_IS_SOFTAP
+        default n if TCP_PERF_ESP_IS_STATION
+    
+    choice TCP_PERF_SERVER_CLIENT
+        prompt "server or client"
+        default TCP_PERF_ESP_IS_CLIENT
+        help
+        Whether the esp32 is tcp server or client.
+            
+        We suggest to choose "client" if you choose "station" in "wifi mode".
+    
+    config TCP_PERF_ESP_IS_SERVER
+        bool "server"
+    config TCP_PERF_ESP_IS_CLIENT
+        bool "client"
+    endchoice
+    
+    config TCP_PERF_SERVER
+        bool
+        default y if TCP_PERF_ESP_IS_SERVER
+        default n if TCP_PERF_ESP_IS_CLIENT
+    
+    choice TCP_PERF_TX_RX
+        prompt "send or receive"
+        default TCP_PERF_ESP_RECV
+        help
+        Whether the esp32 will send or receive.
+    
+    config TCP_PERF_ESP_SEND
+        bool "send"
+    config TCP_PERF_ESP_RECV
+        bool "receive"
+    endchoice
+    
+    config TCP_PERF_TX
+        bool
+        default y if TCP_PERF_ESP_SEND
+        default n if TCP_PERF_ESP_RECV
+    
+    config TCP_PERF_DELAY_DEBUG
+        bool "TCP performance delay info enable"
+        depends on TCP_PERF_TX
+        default n
+        help
+        Show TCP performance delay info.
+            
+        Ignore in TCP RX.
+    
+    config TCP_PERF_WIFI_SSID
+        string "WiFi SSID"
+        default "esp_wifi_test1"
+        help
+        SSID (network name) for the example to connect to.
+    
+    config TCP_PERF_WIFI_PASSWORD
+        string "WiFi Password"
+        default "1234567890"
+        help
+        WiFi password (WPA or WPA2) for the example to use.
+            
+    config TCP_PERF_SERVER_PORT
+        int "TCP server port"
+        default 4567
+        help 
+        Which will the tcp server use.
+                    
+    config TCP_PERF_SERVER_IP
+        string "TCP server ip"
+        depends on TCP_PERF_ESP_IS_CLIENT
+        default "192.168.4.1" 
+        help
+        IP of TCP server.
+            
+        Ignore in TCP server.
+        
+    config TCP_PERF_PKT_SIZE
+        int "Size of TCP packet"
+        default 1460
+        help
+        the data send&recv packet size. 
+            
+    endmenu
+    
